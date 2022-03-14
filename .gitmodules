@@ -1,0 +1,6 @@
+[submodule "client"]
+	path = client
+	url = server:https://github.com/JordanGunn/postify/client
+[submodule "server"]
+	path = server
+	url = server:https://github.com/JordanGunn/postify/server
