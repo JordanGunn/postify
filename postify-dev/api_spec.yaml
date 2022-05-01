@@ -1,0 +1,229 @@
+openapi: 3.0.3
+info:
+  title: Postify API
+  description: Producer/Consumer documentation for the Postify platform.
+  termsOfService: https://apiinfo.madface.info/tos.html
+  contact:
+    name: Postify API Support
+    url: https://apiinfo.madface.info/support.html
+  license:
+    name: CC BY-NC 4.0
+    url: https://creativecommons.org/licenses/by-nc/4.0
+  version: 0.3.0
+servers:
+  - url: https://postify.charliewei.com/4537/termproject/api/v1/
+    description: General purpose
+paths:
+  "/user/{userid}":
+    get:
+      responses:
+        "200":
+          description: the user returned
+          content:
+            application/json:
+              schema:
+                title: "User"
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    format: uuid
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  userName:
+                    type: string
+                  password:
+                    type: string
+                  dateJoined:
+                    type: string
+                    format: date
+    parameters:
+      - name: userid
+        in: path
+        required: true
+        description: Returns all information for a single user
+        schema:
+          type: string
+          format: uuid
+  "/users":
+    get:
+      responses:
+        "200":
+          description: Gets all users
+          content:
+            application/json:
+              schema:
+                title: "User List"
+                type: array
+                items:
+                  type: object
+                  properties:
+                    LastName:
+                      type: string
+                    FirstName:
+                      type: string
+                    UserName:
+                      type: string
+    post:
+      summary: Create a new user
+      requestBody:
+        description: New user attributes
+        required: true
+        content:
+          application/json:
+            schema:
+              title: "User"
+              type: object
+              properties:
+                LastName:
+                  type: string
+                FirstName:
+                  type: string
+                UserName:
+                  type: string
+                Password:
+                  type: string
+      responses:
+        "201":
+          description: Created
+        "409":
+          description: Username already exists
+  "/login":
+    post:
+      summary: Start an authenticated session
+      requestBody:
+        description: Credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              title: "Credentials"
+              type: object
+              properties:
+                UserName:
+                  type: string
+                Password:
+                  type: string
+      responses:
+        "202":
+          description: Login successful
+        "406":
+          description: Incorrect credentials
+  "/project?projID=projID":
+    get:
+      summary: Gets a project
+      responses:
+        "200":
+          description: Found project
+          content:
+            application/json:
+              schema:
+                title: "Project"
+                type: object
+                properties:
+                  projID:
+                    type: string
+                  userID:
+                    type: string
+                  projName:
+                    type: string
+                  projDesc:
+                    type: string
+                  projCreationDate:
+                    type: string
+                  projLevel:
+                    type: string
+                  
+        "404":
+          description: Unable to find projct
+    delete:
+      summary: Delete project
+      responses:
+        "200":
+          description: successful deletion of project
+    parameters:
+      - name: projID
+        in: query
+        required: true
+        description: id of query
+        schema:
+          type: integer
+  "/project/solution/{solID}":
+    delete:
+      summary: Deletes a project solution
+      responses:
+        "200":
+          description: Deleted solution
+        "404":
+          description: Unable to delete solution
+    parameters:
+      - name: solID
+        in: path
+        required: true
+        description: id of solution
+        schema:
+          type: string
+          format: number
+  "/project/solution":
+    get:
+      summary: gets a project solution
+      responses:
+        "200":
+          description: Solution
+          content:
+            application/json:
+              schema:
+                title: "Solution"
+                type: object
+                properties:
+                  solutionID:
+                    type: integer
+                  projID:
+                    type: integer
+                  userID:
+                    type: integer
+                  solDesc:
+                    type: string
+                  solGitLink:
+                    type: string
+                  solFileURL:
+                    type: string
+                  solUpVote:
+                    type: integer
+                  solDownVote:
+                    type: integer
+                  solCreateDate:
+                    type: string
+                  solEditDate:
+                    type: string
+                  
+    put:
+      summary: Updates a project solution
+      requestBody:
+        description: Updated olution details
+        required: true
+        content:
+          application/json:
+            schema:
+              title: "Solution"
+              type: object
+              properties:
+                solDesc:
+                  type: string
+                solGitLink:
+                  type: string
+                solFileURL:
+                  type: string
+                solUpVote:
+                  type: string
+                solDownVote:
+                  type: string
+                solutionID:
+                  type: string
+      responses:
+        "200":
+          description: Deleted solution
+        "404":
+          description: Unable to delete solution        
